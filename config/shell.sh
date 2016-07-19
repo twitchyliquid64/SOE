@@ -2,16 +2,16 @@
 
 . ~/SOE/util/color.sh
 
-exitstatus()
+exitstatus__()
 {
     if [[ $? == 0 ]]; then
-        echo $WHITE
+        printf $WHITE
     else
-        echo $RED
+        printf $RED
     fi
 }
 
-export PS1='$GREEN[\u@\h]$NC: $LIGHTBLUE\w$NC-$(exitstatus)$?$NC> '
+export PS1='$GREEN[\u@\h]$NC: $LIGHTBLUE\w$NC-$(exitstatus__)#$?$NC> '
 
 # Color prompt
 force_color_prompt=yes
