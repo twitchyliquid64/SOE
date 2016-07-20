@@ -7,14 +7,14 @@ shopt -s promptvars dotglob histappend no_empty_cmd_completion cdspell xpg_echo
 
 
 function parse_git_dirty {
-  echo -n $(git status 2>/dev/null | awk -v out=$1 -v std="[dirty]" '{ if ($0=="# Changes to be committed:") std = "uncommited"; last=$0 } END{ if(last!="" && last!="nothing to commit (working directory clean)") { if(out!="") print out; else print std } }')
+  echo -n $(git status 2>/dev/null | awk -v out=$1 -v std="dirty" '{ if ($0=="# Changes to be committed:") std = "uncommited"; last=$0 } END{ if(last!="" && last!="nothing to commit (working directory clean)") { if(out!="") print out; else print std } }')
 }
 function parse_git_remote {
   echo -n $(git status 2>/dev/null | awk -v out=$1 '/# Your branch is / { if(out=="") print $5; else print out }')
 }
 alias branchname="git branch 2>/dev/null | sed -ne 's/^* \(.*\)/ ${PARENCLR}(${BRANCHCLR}\1${PARENCLR}\)/p'"
 
-export PS1='$GREEN[\u@\h]$NC: $LIGHTBLUE\w$NC$CYAN$(branchname)$YELLOW$(parse_git_dirty)$WHITE>$NC'
+export PS1='$GREEN[\u@\h]$NC: $LIGHTBLUE\w$NC$CYAN$(branchname)$YELLOW$(parse_git_dirty)$(parse_git_remote)$WHITE>$NC'
 
 
 
