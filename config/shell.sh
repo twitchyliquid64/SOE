@@ -7,9 +7,14 @@ shopt -s promptvars dotglob histappend no_empty_cmd_completion cdspell xpg_echo
 
 function status__
 {
-  echo `git status` | grep "nothing to commit" > /dev/null 2>&1
-  if [ "$?" -eq "1" ]; then
-    printf "[dirty]"
+  echo `git status` | grep "Your branch is ahead" > /dev/null 2>&1
+  if [ "$?" -eq "0" ]; then
+    echo `git status` | grep "nothing to commit" > /dev/null 2>&1
+    if [ "$?" -eq "1" ]; then
+      printf "[dirty]"
+    else
+      printf "[ahead]"
+    fi
   fi
 }
 
