@@ -4,28 +4,34 @@
 
 shopt -s promptvars dotglob histappend no_empty_cmd_completion cdspell xpg_echo
 
+function coloredUser__
+{
+  if [ "$UID" -eq "0" ]; then
+    printf "$YELLOW"
+  fi
+}
 
 function status__
 {
-  echo `git status` | grep "Your branch is ahead" > /dev/null 2>&1
+  echo `git status 2>&1` | grep "Your branch is ahead" > /dev/null 2>&1
   if [ "$?" -eq "0" ]; then
-    echo `git status` | grep "nothing to commit" > /dev/null 2>&1
+    echo `git status 2>&1` | grep "nothing to commit" > /dev/null 2>&1
     if [ "$?" -eq "1" ]; then
-      printf "[dirty]"
+      printf "$YELLOW[dirty]"
     else
-      printf "[ahead]"
+      printf "$PURPLE[ahead]"
     fi
   else
-    echo `git status` | grep "nothing to commit" > /dev/null 2>&1
-    if [ "$?" -eq "1" ]; then
-      printf "[dirty]"
+    echo `git status 2>&1` | grep "Changes" > /dev/null 2>&1
+    if [ "$?" -eq "0" ]; then
+      printf "$YELLOW[dirty]"
     fi
   fi
 }
 
 alias branchname="git branch 2>/dev/null | sed -ne 's/^* \(.*\)/ ${PARENCLR}(${BRANCHCLR}\1${PARENCLR}\)/p'"
 
-export PS1='$GREEN[\u@\h]$NC:$LIGHTBLUE\w$NC$CYAN$(branchname)$YELLOW$(status__)$WHITE>$NC'
+export PS1='$GREEN[$(coloredUser__)\u$GREEN@\h]$NC:$LIGHTBLUE\w$NC$CYAN$(branchname)$(status__)$WHITE>$NC'
 
 
 
