@@ -31,7 +31,7 @@ function status__
 
 alias branchname="git branch 2>/dev/null | sed -ne 's/^* \(.*\)/ ${PARENCLR}(${BRANCHCLR}\1${PARENCLR}\)/p'"
 
-export PS1='$GREEN[$(coloredUser__)\u$GREEN@\h]$NC:$LIGHTBLUE\w$NC$CYAN$(branchname)$(status__)$WHITE>$NC'
+export PS1='$GREEN[$(coloredUser__)\u$GREEN@\h]$NC:$LIGHTBLUE\w$NC$CYAN$(branchname)$(status__)$WHITE>$NC '
 
 
 
