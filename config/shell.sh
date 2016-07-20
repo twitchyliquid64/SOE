@@ -15,6 +15,11 @@ function status__
     else
       printf "[ahead]"
     fi
+  else
+    echo `git status` | grep "nothing to commit" > /dev/null 2>&1
+    if [ "$?" -eq "1" ]; then
+      printf "[dirty]"
+    fi
   fi
 }
 
