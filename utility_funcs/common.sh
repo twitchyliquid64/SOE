@@ -43,9 +43,11 @@ function myip {
 }
 
 
-time-elsewhere ()
+time-in ()
 {
   case $1 in
+      San)  env TZ='America/Los_Angeles' date    ;;
+      New)  env TZ='America/New_York' date    ;;
       LA)   env TZ='America/Los_Angeles' date    ;;
       *)    echo "don't know timezone '$1'" ;;
   esac
