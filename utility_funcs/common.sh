@@ -31,13 +31,23 @@ alias lsd='ls -l | grep "^d"'   #list only directories
 
 weather ()
 { 
-declare -a WEATHERARRAY 
-WEATHERARRAY=( `elinks -dump "http://www.google.com/search?hl=en&lr=&client=firefox-a&rls=org.mozilla%3Aen-US%3Aofficial&q=weather+71822&btnG=Search" | grep -A 5 -m 1 "Weather for" | grep -v "Add to "`) 
-echo ${WEATHERARRAY[@]} 
+  declare -a WEATHERARRAY 
+  WEATHERARRAY=( `elinks -dump "http://www.google.com/search?hl=en&lr=&client=firefox-a&rls=org.mozilla%3Aen-US%3Aofficial&q=weather+71822&btnG=Search" | grep -A 5 -m 1 "Weather for" | grep -v "Add to "`) 
+  echo ${WEATHERARRAY[@]} 
 }
 
 # Get IP (call with myip)
 function myip {
-  myip=`elinks -dump http://checkip.dyndns.org:8245/`
+  myip=`wget -q -O - https://api.ipify.org`
   echo "${myip}"
+}
+
+
+time-elsewhere ()
+{
+  case $1 in
+      LA)   env TZ='America/Los_Angeles' date    ;;
+      *)    echo "don't know timezone '$1'" ;;
+  esac
+
 }
