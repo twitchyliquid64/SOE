@@ -1,0 +1,19 @@
+#!/bin/bash
+sudo killall s3fs 2>&1 > /dev/null
+
+if [ ! -d "/s3" ];
+then
+   echo "/s3 does not exist, creating folder."
+   sudo mkdir /s3
+fi
+
+while read p; do
+  echo "Loading bucket: $p"
+  if [ ! -d "/s3/${p}" ];
+  then
+     echo "/s3/${p} does not exist, creating folder."
+     sudo mkdir /s3/${p}
+  fi
+  sudo chmod o+rwx "/s3/${p}"
+  sudo screen -d -m -S "s3_$p" s3fs $p "/s3/${p}" -o allow_other -o passwd_file=~/SOE/local/s3 -d -d -f -o f2 -o curldbg
+done <~/SOE/local/s3buckets

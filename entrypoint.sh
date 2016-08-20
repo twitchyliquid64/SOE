@@ -18,3 +18,7 @@ for f in ~/SOE/utility_funcs/*.sh; do
     source $f;
   fi
 done
+
+
+
+path_append ~/SOE/scripts
