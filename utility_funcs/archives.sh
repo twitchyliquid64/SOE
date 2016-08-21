@@ -1,7 +1,9 @@
 #!/bin/bash
 
 
-# Easy extract
+#@function extract
+#@description Extracts a variety of archives into the current directory.
+#@usage $1 path to the archive you wish to extract.
 extract () {
   if [ -f $1 ] ; then
       case $1 in
