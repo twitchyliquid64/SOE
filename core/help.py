@@ -56,7 +56,7 @@ def parseAnnotation(line, fname, lineno):
 
 #iterate the lines in the file at absolute path fpath, returning all annotations inside the file.
 def processBashFile(fpath):
-	print("Now parsing for annotations: " + bcolors.OKBLUE + fpath + bcolors.ENDC)
+	print("Parsing: " + bcolors.OKBLUE + fpath + bcolors.ENDC)
 	fhd = open(fpath, "r")
 	lineno = 0
 	annotations = []
@@ -78,55 +78,80 @@ def parse_dir(dir):
 		annotations.extend(processBashFile(fpath))
 	return annotations
 
+def rebuild():
+	#parse all the directories we care about and store the annotations linearly.
+	annotations = []
+	annotations.extend(parse_dir(util_funcs_dir))
+	#print [str(x) for x in annotations]
+	helpObjs = {}
+	current_parse_context = ""
+	current_help_obj_structure = None
 
+	#iterate annotations and combine them into help objects
+	for annotation in annotations:
+
+		#deal with the contextual annotations
+		if current_parse_context == "": #not legal - cannot have contextual annotation without first reading a top-level annotation like function
+			if annotation.type in ["description", "usage"]:
+				print "Error: Descriptive annotation not prefixed by a more general annotation - " + str(annotation)
+		else:
+			if annotation.type == "description":
+				current_help_obj_structure['description'] = annotation.description
+			if annotation.type == "usage":
+				current_help_obj_structure['args'][annotation.arg] = annotation.description
+
+		#deal with the top-level annotations
+		if annotation.type in  ["func"]: #if we have a first-class annotation (resets state)
+			if current_help_obj_structure != None: #reset state
+				helpObjs[current_help_obj_structure['name']] = current_help_obj_structure
+				current_help_obj_structure = None
+
+			if annotation.type == "func": #if we are a functional annotation - setup state and record
+				current_help_obj_structure = dict()
+				current_parse_context = "func"
+				current_help_obj_structure['name'] = annotation.funcname
+				current_help_obj_structure['description'] = ""
+				current_help_obj_structure['args'] = {}
+				current_help_obj_structure['type'] = 'func'
+
+	if current_help_obj_structure != None: #something in there from the final iteration - add to list
+		helpObjs[current_help_obj_structure['name']] = current_help_obj_structure
+
+	with open(os.path.join(core_dir, "helpdata.json"), "wt") as out:
+		json.dump(helpObjs, out, sort_keys=True, indent=4, separators=(',', ': '))
+
+
+def printHelp(ref):
+	with open(os.path.join(core_dir, "helpdata.json"), "r") as inf:
+		data = json.load(inf)
+
+	if ref not in data:
+		print(bcolors.FAIL + "Could not find any information for reference: " + ref + bcolors.ENDC)
+		return
+
+	obj = data[ref]
+	print(bcolors.BOLD + obj['name'] + bcolors.ENDC + bcolors.OKBLUE + " (" + obj['type'] + ")" + bcolors.ENDC)
+	if 'description' in obj and len(obj['description']) > 1:
+		print("\t" + obj['description'].replace("\n", "\n\t"))
+	else:
+		print(bcolors.WARNING + "\t(No description available)" + bcolors.ENDC)
+	if len(obj['args']) > 0:
+		print("\t" + bcolors.BOLD + "Arguments:" + bcolors.ENDC)
+		for arg in obj['args']:
+			print("\t\t" + bcolors.WARNING + arg + ": " + bcolors.ENDC + obj['args'][arg])
+	else:
+		print(bcolors.WARNING + "\t(No usage information available)" + bcolors.ENDC)
 
 if __name__ == '__main__':
 	if len(sys.argv) < 2:
 		print("Usage: <command>")
 		sys.exit(1)
 	else:
-		if "generate" in sys.argv[1]:
-			#parse all the directories we care about and store the annotations linearly.
-			annotations = []
-			annotations.extend(parse_dir(util_funcs_dir))
-			#print [str(x) for x in annotations]
+		if "generate" in sys.argv[1] or sys.argv[1] in ["build"]:
+			rebuild()
 
-			helpObjs = []
-			current_parse_context = ""
-			current_help_obj_structure = None
+		if sys.argv[1] in ["clean", "uninstall"]:
+			os.remove(os.path.join(core_dir, "helpdata.json"))
 
-			#iterate annotations and combine them into help objects
-			for annotation in annotations:
-
-				#deal with the contextual annotations
-				if current_parse_context == "": #not legal - cannot have contextual annotation without first reading a top-level annotation like function
-					if annotation.type in ["description", "usage"]:
-						print "Error: Descriptive annotation not prefixed by a more general annotation - " + str(annotation)
-				else:
-					if annotation.type == "description":
-						current_help_obj_structure['description'] = annotation.description
-					if annotation.type == "usage":
-						current_help_obj_structure['args'][annotation.arg] = annotation.description
-
-				#deal with the top-level annotations
-				if annotation.type in  ["func"]: #if we have a first-class annotation (resets state)
-					if current_help_obj_structure != None: #reset state
-						helpObjs.append(current_help_obj_structure)
-						current_help_obj_structure = None
-
-					if annotation.type == "func": #if we are a functional annotation - setup state and record
-						current_help_obj_structure = dict()
-						current_parse_context = "func"
-						current_help_obj_structure['name'] = annotation.funcname
-						current_help_obj_structure['description'] = ""
-						current_help_obj_structure['args'] = {}
-						current_help_obj_structure['type'] = 'func'
-
-			if current_help_obj_structure != None: #something in there from the final iteration - add to list
-				helpObjs.append(current_help_obj_structure)
-
-			with open(os.path.join(core_dir, "helpdata.json"), "wt") as out:
-				json.dump(helpObjs, out, sort_keys=True, indent=4, separators=(',', ': '))
-
-
-
+		elif sys.argv[1] == "help":
+			printHelp(sys.argv[2])
