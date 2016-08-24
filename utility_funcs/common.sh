@@ -2,15 +2,21 @@
 
 
 #Timestamps
+#@alias stamp
+#@description Returns a single string with no spaces, representing the current date and time. Output represents the current timezone.
 alias stamp='date "+%Y%m%d%a%H%M"'
+#@alias da
+#@description Returns a human-friendly datetime string in the current timezone.
 alias da='date "+%Y-%m-%d %A    %T %Z"'
 
-#show most popular commands
-alias top-commands='history | awk "{print $2}" | awk "BEGIN {FS="|"} {print $1}" |sort|uniq -c | sort -rn | head -10'
-
 # search for a package
+#@alias search
+#@description Searches for a package using apt-cache.
+#@usage $1 the search term to search for.
 alias search="apt-cache search"
 
+#@alias path
+#@description Prints a list of all the directories in path, one per line.
 alias path='echo -e ${PATH//:/\\n}'
 
 # some more ls aliases
@@ -30,13 +36,15 @@ alias lsd='ls -l | grep "^d"'   #list only directories
 
 
 weather ()
-{ 
-  declare -a WEATHERARRAY 
-  WEATHERARRAY=( `elinks -dump "http://www.google.com/search?hl=en&lr=&client=firefox-a&rls=org.mozilla%3Aen-US%3Aofficial&q=weather+71822&btnG=Search" | grep -A 5 -m 1 "Weather for" | grep -v "Add to "`) 
-  echo ${WEATHERARRAY[@]} 
+{
+  declare -a WEATHERARRAY
+  WEATHERARRAY=( `elinks -dump "http://www.google.com/search?hl=en&lr=&client=firefox-a&rls=org.mozilla%3Aen-US%3Aofficial&q=weather+71822&btnG=Search" | grep -A 5 -m 1 "Weather for" | grep -v "Add to "`)
+  echo ${WEATHERARRAY[@]}
 }
 
 # Get IP (call with myip)
+#@function myip
+#@description Returns your current WAN IP.
 function myip {
   myip=`wget -q -O - https://api.ipify.org`
   echo "${myip}"

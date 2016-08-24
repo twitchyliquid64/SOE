@@ -1,4 +1,8 @@
 #!/bin/bash
+
+#@script s3m
+#@description Mounts all s3 buckets specified in local/s3buckets using the keys in local/s3, to /s3.
+
 sudo killall s3fs 2>&1 > /dev/null
 
 if [ ! -d "/s3" ];

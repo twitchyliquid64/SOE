@@ -27,6 +27,16 @@ extract () {
 
 
 # Creates an archive from given directory
+
+#@function mktar
+#@description Creates a tar archive from a given directory.
+#@usage $1 path to the directory.
 mktar() { tar cvf  "${1%%/}.tar"     "${1%%/}/"; }
+#@function mktgz
+#@description Creates a gzipped tarball from a given directory.
+#@usage $1 path to the directory.
 mktgz() { tar cvzf "${1%%/}.tar.gz"  "${1%%/}/"; }
+#@function mktbz
+#@description Creates a bzipped tarball from a given directory.
+#@usage $1 path to the directory.
 mktbz() { tar cvjf "${1%%/}.tar.bz2" "${1%%/}/"; }

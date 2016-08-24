@@ -28,6 +28,8 @@ class annotation(object):
 		out = ""
 		if self.type == "func":
 			out = bcolors.OKGREEN + "Function annotation: " + bcolors.WARNING + str(self.funcname) + bcolors.ENDC
+		elif self.type == "alias":
+			out = bcolors.OKGREEN + "Alias annotation: " + bcolors.WARNING + str(self.funcname) + bcolors.ENDC
 		elif self.type == "description":
 			out = bcolors.OKGREEN + "Description annotation:" + bcolors.ENDC
 		elif self.type == "usage":
@@ -41,6 +43,9 @@ def parseAnnotation(line, fname, lineno):
 	ret = annotation(fname, lineno)
 	if spaceSPL[0] == "#@function":
 		ret.type = "func"
+		ret.funcname = spaceSPL[1]
+	if spaceSPL[0] == "#@alias":
+		ret.type = "alias"
 		ret.funcname = spaceSPL[1]
 	if spaceSPL[0] == "#@description":
 		ret.type = "description"
@@ -64,7 +69,7 @@ def processBashFile(fpath):
 		lineno += 1
 		if line.startswith("#@"):
 			a = parseAnnotation(line, fpath, lineno)
-			print "\t" + str(a) if a.type in ["func"] else "\t\t" + str(a)
+			print "\t" + str(a) if a.type in ["func", "alias"] else "\t\t" + str(a)
 			annotations.append(a)
 	fhd.close()
 	return annotations
@@ -101,7 +106,7 @@ def rebuild():
 				current_help_obj_structure['args'][annotation.arg] = annotation.description
 
 		#deal with the top-level annotations
-		if annotation.type in  ["func"]: #if we have a first-class annotation (resets state)
+		if annotation.type in  ["func", "alias"]: #if we have a first-class annotation (resets state)
 			if current_help_obj_structure != None: #reset state
 				helpObjs[current_help_obj_structure['name']] = current_help_obj_structure
 				current_help_obj_structure = None
@@ -113,6 +118,14 @@ def rebuild():
 				current_help_obj_structure['description'] = ""
 				current_help_obj_structure['args'] = {}
 				current_help_obj_structure['type'] = 'func'
+			if annotation.type == "alias": #if we are a functional annotation - setup state and record
+				current_help_obj_structure = dict()
+				current_parse_context = "alias"
+				current_help_obj_structure['name'] = annotation.funcname
+				current_help_obj_structure['description'] = ""
+				current_help_obj_structure['args'] = {}
+				current_help_obj_structure['type'] = 'alias'
+
 
 	if current_help_obj_structure != None: #something in there from the final iteration - add to list
 		helpObjs[current_help_obj_structure['name']] = current_help_obj_structure
@@ -120,6 +133,11 @@ def rebuild():
 	with open(os.path.join(core_dir, "helpdata.json"), "wt") as out:
 		json.dump(helpObjs, out, sort_keys=True, indent=4, separators=(',', ': '))
 
+def listCommands():
+	with open(os.path.join(core_dir, "helpdata.json"), "r") as inf:
+		data = json.load(inf)
+        for cmd in data:
+            print cmd
 
 def printHelp(ref):
 	with open(os.path.join(core_dir, "helpdata.json"), "r") as inf:
@@ -155,3 +173,5 @@ if __name__ == '__main__':
 
 		elif sys.argv[1] == "help":
 			printHelp(sys.argv[2])
+        if sys.argv[1] == "commands":
+            listCommands()
