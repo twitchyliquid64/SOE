@@ -13,3 +13,12 @@ function for_py {
     eval $evalStr
   done
 }
+
+
+function for_file_r {
+  for i in `find . -name $2`
+  do
+    evalStr="$1 $i"
+    eval $evalStr
+  done
+}
