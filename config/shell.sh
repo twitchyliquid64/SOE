@@ -4,35 +4,13 @@
 
 shopt -s promptvars dotglob histappend no_empty_cmd_completion cdspell xpg_echo
 
-function coloredUser__
-{
-  if [ "$UID" -eq "0" ]; then
-    printf "$YELLOW"
-  fi
-}
-
-function status__
-{
-  echo `git status 2>&1` | grep "Your branch is ahead" > /dev/null 2>&1
-  if [ "$?" -eq "0" ]; then
-    echo `git status 2>&1` | grep "nothing to commit" > /dev/null 2>&1
-    if [ "$?" -eq "1" ]; then
-      printf "$YELLOW[dirty]"
-    else
-      printf "$PURPLE[ahead]"
-    fi
-  else
-    echo `git status 2>&1` | grep "Changes" > /dev/null 2>&1
-    if [ "$?" -eq "0" ]; then
-      printf "$YELLOW[dirty]"
-    fi
-  fi
-}
-
 alias branchname="git branch 2>/dev/null | sed -ne 's/^* \(.*\)/ ${PARENCLR}(${BRANCHCLR}\1${PARENCLR}\)/p'"
 
-export PS1='\[\033[0;32m\][$(coloredUser__)\u@\h]\[\033[0m\]:\[\033[1;34m\]\w$(branchname)\[\033[0m\]> '
+export PS1="\[\033[38;5;2m\][\u\[$(tput sgr0)\]\[\033[38;5;1m\]@\[$(tput sgr0)\]\[\033[38;5;2m\]\h]\[$(tput sgr0)\]\[\033[38;5;15m\]:\[$(tput bold)\]\[\033[38;5;6m\]\w$(branchname)\[$(tput sgr0)\]\[\033[38;5;15m\]>\[$(tput sgr0)\]"
 
+if [ "$UID" -eq "0" ]; then
+  export PS1="\[\033[38;5;2m\][\[$(tput sgr0)\]\[\033[38;5;11m\]\u\[$(tput sgr0)\]\[\033[38;5;1m\]@\[$(tput sgr0)\]\[\033[38;5;2m\]\h]\[$(tput sgr0)\]\[\033[38;5;15m\]:\[$(tput bold)\]\[\033[38;5;6m\]\w$(branchname)\[$(tput sgr0)\]\[\033[38;5;15m\]>\[$(tput sgr0)\]"
+fi
 
 
 
