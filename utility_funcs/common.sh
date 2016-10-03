@@ -34,6 +34,9 @@ alias lsize='ls --sort=size -lhr' # list by size
 alias l?='cat /home/will/technical/tips/ls'
 alias lsd='ls -l | grep "^d"'   #list only directories
 
+#@alias purge_git_metadata_recursive
+#@description Recursively deletes all .git folders in current/child directories.
+alias purge_git_metadata_recursive='find . | grep .git | xargs rm -rf'
 
 weather ()
 {
