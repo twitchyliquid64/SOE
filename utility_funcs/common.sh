@@ -19,6 +19,12 @@ alias search="apt-cache search"
 #@description Prints a list of all the directories in path, one per line.
 alias path='echo -e ${PATH//:/\\n}'
 
+#@alias ff
+#@description Find a given file in ./ or lower directory.
+#@usage $1 Filename to search for
+alias ff='find . -name '
+
+
 # some more ls aliases
 alias ls='ls -hF --color'    # add colors for filetype recognition
 alias lx='ls -lXB'        # sort by extension
@@ -34,14 +40,12 @@ alias lsize='ls --sort=size -lhr' # list by size
 alias l?='cat /home/will/technical/tips/ls'
 alias lsd='ls -l | grep "^d"'   #list only directories
 
-#@alias purge_git_metadata_recursive
-#@description Recursively deletes all .git folders in current/child directories.
-alias purge_git_metadata_recursive='find . | grep .git | xargs rm -rf'
-
+#@function weather
+#@description Prints details about the weather in Sydney.
 weather ()
 {
   declare -a WEATHERARRAY
-  WEATHERARRAY=( `elinks -dump "http://www.google.com/search?hl=en&lr=&client=firefox-a&rls=org.mozilla%3Aen-US%3Aofficial&q=weather+71822&btnG=Search" | grep -A 5 -m 1 "Weather for" | grep -v "Add to "`)
+  WEATHERARRAY=( `curl --raw http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=Sydney | perl -ne '/<title>([^<]+)/&&printf "%s: ",$1;/<fcttext>([^<]+)/&&print $1,"\n"'`)
   echo ${WEATHERARRAY[@]}
 }
 
@@ -55,13 +59,37 @@ function myip {
 
 
 #@function time-in
+#@description Prints the time in a timezone. Accepted values are: San Fran,New York, LA, MTV, Brisbane, Perth, Zurich, France, Spain, Amsterdam, London, Toronto, China.
+#@usage $1 The locality to print the time in.
 time-in ()
 {
   case $1 in
-      San)  env TZ='America/Los_Angeles' date    ;;
-      New)  env TZ='America/New_York' date    ;;
-      LA)   env TZ='America/Los_Angeles' date    ;;
-      *)    echo "don't know timezone '$1'" ;;
+      LA)           env TZ='America/Los_Angeles' date    ;;
+      MTV)          env TZ='America/Los_Angeles' date    ;;
+      San)          env TZ='America/Los_Angeles' date    ;;
+      san)          env TZ='America/Los_Angeles' date    ;;
+
+      New)          env TZ='America/New_York' date       ;;
+      new)          env TZ='America/New_York' date       ;;
+
+      Zurich)       env TZ='Europe/Zurich' date          ;;
+      France)       env TZ='Europe/Paris'  date          ;;
+      Madrid)       env TZ='Europe/Madrid' date          ;;
+      Spain)        env TZ='Europe/Madrid' date          ;;
+      Amsterdam)    env TZ='Europe/Amsterdam' date       ;;
+      London)       env TZ='Europe/London' date          ;;
+      Toronto)      env TZ='Canada/Eastern' date         ;;
+
+      China)        env TZ='Asia/Shanghai' date          ;;
+      Shanghai)     env TZ='Asia/Shanghai' date          ;;
+      Shenzhen)     env TZ='Asia/Shanghai' date          ;;
+
+      Perth)        env TZ='Australia/Perth' date        ;;
+      Queensland)   env TZ='Australia/Brisbane' date     ;;
+      Brisbane)     env TZ='Australia/Brisbane' date     ;;
+      Townsville)   env TZ='Australia/Brisbane' date     ;;
+
+      *)    echo "Don't know timezone '$1'. Accepted values are: San Fran,New York, LA, MTV, Brisbane, Perth, Zurich, France, Spain, Amsterdam, London, Toronto, China." ;;
   esac
 
 }
