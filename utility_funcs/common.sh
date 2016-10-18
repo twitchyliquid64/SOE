@@ -1,5 +1,16 @@
 #!/bin/bash
 
+#Detect running platform
+platform='unknown'
+unamestr=`uname`
+if [[ "$unamestr" == 'Linux' ]]; then
+  platform='linux'
+fi
+if [[ "$unamestr" == 'Darwin' ]]; then
+  platform='mac'
+  export CLICOLOR=1
+  export LSCOLORS=GxFxCxDxBxegedabagaced
+fi
 
 #Timestamps
 #@alias stamp
@@ -26,7 +37,9 @@ alias ff='find . -name '
 
 
 # some more ls aliases
-alias ls='ls -hF --color'    # add colors for filetype recognition
+if [[ $platform == 'linux' ]]; then
+  alias ls='ls -hF --color'    # add colors for filetype recognition
+fi
 alias lx='ls -lXB'        # sort by extension
 alias lk='ls -lSr'        # sort by size
 alias la='ls -Al'        # show hidden files
