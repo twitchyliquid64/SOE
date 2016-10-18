@@ -53,6 +53,8 @@ alias lsize='ls --sort=size -lhr' # list by size
 alias l?='cat /home/will/technical/tips/ls'
 alias lsd='ls -l | grep "^d"'   #list only directories
 
+alias fix_last_commit_msg='git -c user.name="twitchyliquid64" -c user.email=twitchyliquid64@ciphersink.net commit --amend --reset-author'
+
 #@function weather
 #@description Prints details about the weather in Sydney.
 weather ()
