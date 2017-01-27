@@ -28,5 +28,5 @@ function for_file_r {
 
 
 #@alias purge_git_metadata_recursive
-#@description Recursively deletes all .git folders in current/child directories.
+#@description Recursively deletes all .git folders in current/child directories. BE CAREFUL - it will also delete any file with the word git in the filename.
 alias purge_git_metadata_recursive='find . | grep .git | xargs rm -rf'

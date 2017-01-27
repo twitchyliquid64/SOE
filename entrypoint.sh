@@ -19,6 +19,6 @@ for f in ~/SOE/utility_funcs/*.sh; do
   fi
 done
 
-
+. ~/SOE/util/go-pkg-autocomplete.sh
 
 path_append ~/SOE/scripts
