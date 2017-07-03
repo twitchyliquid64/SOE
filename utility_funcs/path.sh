@@ -13,3 +13,8 @@ path_prepend () { path_remove $1; export PATH="$1:$PATH"; }
 #@description Removes all instances of the argument from the shell's PATH.
 #@usage $1 The path to remove from PATH.
 path_remove ()  { export PATH=`echo -n $PATH | awk -v RS=: -v ORS=: '$0 != "'$1'"' | sed 's/:$//'`; }
+
+
+#@alias gop_pwd
+#@description Sets the GOPATH variable to the current directory.
+alias gop_pwd='export GOPATH=`pwd`'
