@@ -30,6 +30,5 @@ export HISTSIZE=100000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 shopt -s histappend
-export PROMPT_COMMAND='history -a'
 
 alias reload='. ~/.bashrc'
