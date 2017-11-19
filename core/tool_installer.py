@@ -16,8 +16,11 @@ except IOError:
     pass
 
 def arch_string():
-    if sys.platform in ["linux", "linux2"] and sys.maxsize > 2**32:
+    un = os.uname()
+    if un[0] in ["Linux", "linux", "linux2"] and un[4] == "x86_64":
         return "amd64"
+    elif un[0] == "Linux" and un[4] == "armv6l":
+        return "arm"
     else:
         raise Exception("Could not determine platform.")
 
