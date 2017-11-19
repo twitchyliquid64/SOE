@@ -14,5 +14,21 @@
             "set-exec": true
           }
         ]
+    },
+    {
+        "name": "machassert",
+        "type": "github-binary",
+        "github-data": {
+            "repo": "machassert",
+            "user": "twitchyliquid64"
+        },
+        "artifacts": [
+          {
+            "name": "massert",
+            "path": "/usr/bin/massert",
+            "check-arch": true,
+            "set-exec": true
+          }
+        ]
     }
 ]
