@@ -36,6 +36,12 @@ alias path='echo -e ${PATH//:/\\n}'
 alias ff='find . -name '
 
 
+
+#@alias gitf_gopkg
+#@description Lists all .git folder subdirectories in src/, excluding packages used for source management by go-plus atom integration.
+alias gitf_gopkg='find ./src | grep \\.git/ | grep -v -e /goreturns/ | grep -v -e /delve/ | grep -v -e /gomodifytags/ | grep -v -e /gometalinter/ | grep -v -e /godef/ | grep -v -e /gogetdoc/ | grep -v -e /gocode/'
+
+
 # some more ls aliases
 if [[ $platform == 'linux' ]]; then
   alias ls='ls -hF --color'    # add colors for filetype recognition
