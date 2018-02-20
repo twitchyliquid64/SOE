@@ -59,6 +59,19 @@ def log_install(name, version, release):
     with open(os.path.join(core_dir, "installeddb.json"), "wt") as out:
         json.dump(tooldb, out, sort_keys=True, indent=4, separators=(',', ': '))
 
+def rfc3339_to_epoch(i):
+    dt = datetime.datetime.strptime(i, '%Y-%m-%dT%H:%M:%SZ')
+    return (dt - datetime.datetime(1970,1,1)).total_seconds()
+
+def pick_latest_release(releases):
+    earliest = 0
+    release = None
+    for x in releases:
+        if rfc3339_to_epoch(x['published_at']) > earliest:
+            earliest = rfc3339_to_epoch(x['published_at'])
+            release = x
+    return release
+
 def install_from_github(tool):
     repo_response = urllib2.urlopen("https://api.github.com/repos/%s/%s/releases" % (tool['github-data']['user'], tool['github-data']['repo']))
     if repo_response.getcode() != 200:
@@ -67,7 +80,7 @@ def install_from_github(tool):
 
     repo_list = json.load(repo_response)
     print("There are " + str(len(repo_list)) + bcolors.ENDC + " releases of " + bcolors.OKBLUE + tool['name'] + bcolors.ENDC + ".")
-    release = [x for x in repo_list if x['published_at'] == max([x['published_at'] for x in repo_list])][0]
+    release = pick_latest_release(repo_list)
     published_at_delta = (datetime.datetime.now()-convert_enddate(release['published_at']))
     print("Latest version " + bcolors.OKGREEN + release['name'] + bcolors.ENDC + " has been selected (" + "published " + bcolors.OKGREEN + str(published_at_delta.days) + bcolors.ENDC + " days ago).")
 
