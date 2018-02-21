@@ -29,3 +29,13 @@ function soe-tool () {
       echo "Unknown sub-command '$1'"
     fi
 }
+
+#@function soe-update
+#@description pulls updates to SOE and reloads.
+function soe-update () {
+  cur_pwd=`pwd`
+  cd ~/SOE
+  git pull
+  cd $cur_pwd
+  reload
+}
