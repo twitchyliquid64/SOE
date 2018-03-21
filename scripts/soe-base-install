@@ -1,0 +1,44 @@
+#!/bin/bash
+
+apt-get update
+
+PACKAGES="nano git screen htop build-essential python"
+for pkg in $PACKAGES; do
+        if dpkg -l $pkg &> /dev/null; then
+          echo "$pkg is already installed."
+        else
+          if apt-get --assume-yes install $pkg; then
+            echo "Successfully installed $pkg"
+          else
+            echo "Error installing $pkg"
+          fi
+        fi
+done
+
+if [ -f /usr/local/go/bin/go ]; then
+	echo "Go is already installed."
+else
+        VERSION="1.10"
+        MACHINE_TYPE=`uname -m`
+        if [ ${MACHINE_TYPE} == 'x86_64' ]; then
+                DFILE="go$VERSION.linux-amd64.tar.gz"
+        else
+                DFILE="go$VERSION.linux-386.tar.gz"
+        fi
+
+        echo "Downloading $DFILE ..."
+        wget https://storage.googleapis.com/golang/$DFILE -O /tmp/go.tar.gz
+
+        if [ $? -ne 0 ]; then
+            echo "Download failed! Exiting."
+            exit 1
+        fi
+
+        tar -C /usr/local -xzf /tmp/go.tar.gz
+        echo "\nexport PATH=$PATH:/usr/local/go/bin\n" | tee -a /etc/profile
+	export PATH=$PATH:/usr/local/go/bin
+        echo "Go has been installed successfully."
+        rm /tmp/go.tar.gz
+fi
+
+
