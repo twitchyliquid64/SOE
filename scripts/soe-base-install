@@ -35,7 +35,7 @@ else
         fi
 
         tar -C /usr/local -xzf /tmp/go.tar.gz
-        echo "\nexport PATH=$PATH:/usr/local/go/bin\n" | tee -a /etc/profile
+        printf "\nexport PATH=\$PATH:/usr/local/go/bin\n" | tee -a /etc/profile
 	export PATH=$PATH:/usr/local/go/bin
         echo "Go has been installed successfully."
         rm /tmp/go.tar.gz
