@@ -12,6 +12,11 @@ if [[ "$unamestr" == 'Darwin' ]]; then
   export LSCOLORS=GxFxCxDxBxegedabagaced
 fi
 
+#Random strings
+#@alias rnds
+#@description Returns a 13-character random string.
+alias rnds='head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13 && echo'
+
 #Timestamps
 #@alias stamp
 #@description Returns a single string with no spaces, representing the current date and time. Output represents the current timezone.

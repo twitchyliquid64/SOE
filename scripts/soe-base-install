@@ -1,5 +1,9 @@
 #!/bin/bash
 
+trap "echo Subcommand failed! script aborted.; exit 1" ERR
+set -e
+set -o pipefail
+
 apt-get update
 
 PACKAGES="nano git screen htop build-essential python"
