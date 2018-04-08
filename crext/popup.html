@@ -1,0 +1,74 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+ -->
+<html>
+  <head>
+    <title>SOE</title>
+     <meta charset="utf-8">
+
+    <script src="lib/jquery.js"></script>
+ 		<script src="lib/bootstrap.min.js"></script>
+
+    <link href="lib/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+    body{
+      width: 450px;
+      min-height: 350px;
+    }
+    </style>
+    <script src="popup.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-default" role="navigation">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">SOE</a>
+			</div>
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active">
+						<a href="#">Config</a>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="#">Action</a>
+							</li>
+							<li>
+								<a href="#">Another action</a>
+							</li>
+							<li>
+								<a href="#">Something else here</a>
+							</li>
+							<li>
+								<a href="#">Separated link</a>
+							</li>
+							<li>
+								<a href="#">One more separated link</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+    <section id="trusted_origins" style="margin: 4px;">
+      <table class="table">
+        <thead>
+          <th>Domain</th>
+          <th>Actions</th>
+        </thead>
+        <tbody id="trusted_origins_tbody">
+        </tbody>
+      </table>
+
+      <a id="trust_current_origin_btn" class="btn btn-default" href="#" role="button">
+        Add current page to trusted list.
+      </a>
+    </section>
+  </body>
+</html>

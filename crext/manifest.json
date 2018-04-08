@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "SOE",
+  "version": "0.1",
+  "description": "Integrates Chrome into an install of SOE.",
+  "icons": {"32": "ct.png"},
+  "permissions": [
+    "https://*/*",
+    "http://*/*",
+    "activeTab",
+    "storage",
+    "tabs"
+  ],
+  "browser_action": {
+    "default_icon": "ct.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+   "scripts": ["background.js"]
+ },
+ "content_scripts": [ {
+      "matches": [ "http://*/*", "https://*/*"  ],
+      "js": [ "inject.js" ]
+   } ]
+}
