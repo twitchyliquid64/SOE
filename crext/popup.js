@@ -56,6 +56,19 @@ function init_soe_popup() {
 
   document.getElementById('trust_current_origin_btn').addEventListener(
     'click', trust_current_origin);
+
+  document.getElementById('config_tab').addEventListener('click', function(){
+    $("#trusted_origins").show();
+    $("#shortcuts").hide();
+    document.getElementById('config_tab').classList.add('active');
+    document.getElementById('shortcut_tab').classList.remove('active');
+  });
+  document.getElementById('shortcut_tab').addEventListener('click', function(){
+    $("#trusted_origins").hide();
+    $("#shortcuts").show();
+    document.getElementById('shortcut_tab').classList.add('active');
+    document.getElementById('config_tab').classList.remove('active');
+  });
 };
 
 var readyStateCheckInterval = setInterval(function() {

@@ -17,7 +17,8 @@
     <style>
     body{
       width: 450px;
-      min-height: 350px;
+      height: 250px;
+      overflow-y: scroll;
     }
     </style>
     <script src="popup.js"></script>
@@ -25,13 +26,17 @@
   <body>
     <nav class="navbar navbar-default" role="navigation">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">SOE</a>
+				<a class="navbar-brand" href="#"><b>SOE</b></a>
 			</div>
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active">
+					<li id="config_tab" class="active">
 						<a href="#">Config</a>
 					</li>
+          <li id="shortcut_tab">
+            <a href="#">Shortcuts</a>
+          </li>
+          <!--
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -52,6 +57,7 @@
 							</li>
 						</ul>
 					</li>
+        -->
 				</ul>
 			</div>
 		</nav>
@@ -69,6 +75,18 @@
       <a id="trust_current_origin_btn" class="btn btn-default" href="#" role="button">
         Add current page to trusted list.
       </a>
+    </section>
+
+
+    <section id="shortcuts" style="margin: 4px; display: none;">
+      <table class="table">
+        <thead>
+          <th>Shortcut</th>
+          <th>URL</th>
+        </thead>
+        <tbody id="shortcuts_tbody">
+        </tbody>
+      </table>
     </section>
   </body>
 </html>
