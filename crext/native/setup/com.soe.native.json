@@ -1,0 +1,9 @@
+{
+  "name": "com.soe.native",
+  "description": "Chrome Native Messaging API Host for SOE extension",
+  "path": "/home/xxx/SOE/crext/native/native",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://molmdlepaifbaknbmnmnehegjghlleja/"
+  ]
+}
