@@ -9,7 +9,8 @@
     "http://*/*",
     "activeTab",
     "storage",
-    "tabs"
+    "tabs",
+    "nativeMessaging"
   ],
   "browser_action": {
     "default_icon": "ct.png",
@@ -18,6 +19,7 @@
   "background": {
    "scripts": ["background.js"]
  },
+ "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDke6VrlZje0o/th2Il/IM+u/cflzj7ZcqgFPWorrzpXc4mqD7Z0e8FZzZ4COfg28dwrsbCOcoj0Q7EKN+GnAGigFipfFwMOsp8NdA/hp0cgilsCcWZBbcBCofzmw0zf3JqKxMNqSRehvfSPT6qrTH5/7qX/bcycQqlpJtZOAV6sQIDAQAB",
  "content_scripts": [ {
       "matches": [ "http://*/*", "https://*/*"  ],
       "js": [ "inject.js" ]

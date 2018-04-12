@@ -26,6 +26,17 @@ function handleStorageChanged(changes, namespace) {
   }
 }
 
+function sendNative(msg_obj) {
+  var port = chrome.runtime.connectNative('com.soe.native');
+  port.onMessage.addListener(function(msg) {
+    console.log("Received" + msg);
+  });
+  port.onDisconnect.addListener(function() {
+    console.log("Disconnected");
+  });
+  port.postMessage(msg_obj);
+}
+
 function extractOrigin(url) {
     schemeIndex = url.indexOf("://");
     if (schemeIndex > -1) {

@@ -2,3 +2,9 @@ secure/*
 local/*
 core/helpdata.json
 core/installeddb.json
+
+/src/*
+/pkg/*
+/bin/*
+
+/crext/native/native
