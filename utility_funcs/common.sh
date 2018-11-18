@@ -83,6 +83,11 @@ function myip {
   echo "${myip}"
 }
 
+# SSH to host but dont save the fingerprint
+#@function ssha
+function ssha {
+  ssh -o StrictHostKeyChecking=no -o "UserKnownHostsFile /dev/null" $1
+}
 
 #@function time-in
 #@description Prints the time in a timezone. Accepted values are: San Fran,New York, LA, MTV, Brisbane, Perth, Zurich, France, Spain, Amsterdam, London, Toronto, China.
