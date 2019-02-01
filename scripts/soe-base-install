@@ -27,7 +27,11 @@ else
         if [ ${MACHINE_TYPE} == 'x86_64' ]; then
                 DFILE="go$VERSION.linux-amd64.tar.gz"
         else
-                DFILE="go$VERSION.linux-386.tar.gz"
+		if [ "${MACHINE_TYPE}" == 'armv7l' ]; then
+	                DFILE="go$VERSION.linux-armv6l.tar.gz"
+		else
+	                DFILE="go$VERSION.linux-386.tar.gz"
+		fi
         fi
 
         echo "Downloading $DFILE ..."
