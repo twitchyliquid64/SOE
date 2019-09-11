@@ -1,16 +1,25 @@
 SOE
 ========
 
-SOE is my collection of aliases, scripts, and customizations which I use on *nix environments.
-
+SOE is my collection of aliases, scripts, and customizations which I use on \*nix environments.
 
 
 ### First install
 
-Run: `soe-help --system generate`
+Copy-paste this into a terminal:
 
-Make sure you source entrypoint in your `~/.bashrc` as well: `. ~/SOE/entrypoint.sh`
+```shell
+cd
+git clone https://github.com/twitchyliquid64/SOE
+. ~/SOE/entrypoint.sh
+soe-help --system generate
 
+# Setup persistently
+echo '. ~/SOE/entrypoint.sh' >>~/.bashrc
+
+# Optional
+install-go
+```
 
 ### Command help
 
