@@ -4,7 +4,7 @@ install-go ()  {
   ARCH="$(uname -m)"
   VERS="1.12.9"
   BASE_PATH="/usr/local/go"
-  PROFILE_PATH="${HOME}/.bash_profile"
+  PROFILE_PATH="${HOME}/.profile"
 
   case $ARCH in
   "x86_64")
@@ -41,8 +41,11 @@ install-go ()  {
 
   if [[ ( ! -f $PROFILE_PATH ) || $(cat $PROFILE_PATH) != *"${BASE_PATH}/bin"* ]]; then
     echo "Adding ${BASE_PATH}/bin to ${PROFILE_PATH}"
-    OUT="export PATH=${BASE_PATH}/bin:"
+    
+    OUT=$'\n# Start install-go section\n'
+    OUT+="export PATH=${BASE_PATH}/bin:"
     OUT+='$PATH'
+    OUT+=$'\n# End install-go section'
     echo "$OUT" >>$PROFILE_PATH
   fi
 }
