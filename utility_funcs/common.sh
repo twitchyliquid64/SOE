@@ -64,16 +64,10 @@ alias lsize='ls --sort=size -lhr' # list by size
 alias l?='cat /home/will/technical/tips/ls'
 alias lsd='ls -l | grep "^d"'   #list only directories
 
+#@alias fix_last_commit_msg
+#@description Sets my git username and email for the current repository.
 alias fix_last_commit_msg='git -c user.name="twitchyliquid64" -c user.email=twitchyliquid64@ciphersink.net commit --amend --reset-author'
 
-#@function weather
-#@description Prints details about the weather in Sydney.
-weather ()
-{
-  declare -a WEATHERARRAY
-  WEATHERARRAY=( `curl --raw http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=Sydney | perl -ne '/<title>([^<]+)/&&printf "%s: ",$1;/<fcttext>([^<]+)/&&print $1,"\n"'`)
-  echo ${WEATHERARRAY[@]}
-}
 
 # Get IP (call with myip)
 #@function myip

@@ -6,10 +6,10 @@ set -o pipefail
 
 sudo apt-get update
 
-PACKAGES="nano git screen htop build-essential python python3"
+PACKAGES="nano git screen htop build-essential python python3 jq"
 for pkg in $PACKAGES; do
   output=$(sudo bash -c "dpkg -l ${pkg} &> /dev/null && echo installed")
-  
+
   if [[ $output == "installed" ]]; then
     echo "$pkg is already installed."
   else
