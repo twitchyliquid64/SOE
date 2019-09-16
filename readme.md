@@ -18,7 +18,8 @@ soe-help --system generate
 echo '. ~/SOE/entrypoint.sh' >>~/.bashrc
 
 # Optional
-install-go
+soe-base-install # Does install-go internally
+# install-go
 ```
 
 ### Command help
