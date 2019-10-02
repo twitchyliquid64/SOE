@@ -2,10 +2,11 @@
 # Don't forget to pip install pyserial
 import serial
 import time
+import sys
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("mode", help="power/UART")
+parser.add_argument("mode", help="power/uart/uart-bridge")
 parser.add_argument("--pwr", help="enable power output", action="store_true")
 parser.add_argument("--debug", help="print activity under the hood", action="store_true")
 parser.add_argument("--baud", help="set baud rate for UART mode", nargs=1, default=[115200])
@@ -106,11 +107,23 @@ class BP:
                 if d and ord(d[0]) == 0x01:
                     break
 
-print args
+    def uart_bridge(self):
+        if self.mode != "uart":
+            raise Exception("Can't set UART baud in mode: " + self.mode)
+        self._trace("UART bridge: sending start command")
+        self.port.write(bytearray([0b00001111]))
+        self._trace("UART bridge: entering UART -> USB copy loop")
+        while True:
+            d = self.port.read(2)
+            if d:
+                sys.stdout.write(d)
+
 bp = BP("/dev/buspirate", args.debug)
 if args.mode == "power" or args.pwr:
     bp.regulatorMode(True)
 
-if args.mode == "UART":
+if args.mode == "uart" or args.mode == "uart-bridge":
     bp.enterMode('uart')
     bp.set_uart_baud(int(args.baud[0]))
+if args.mode == 'uart-bridge':
+    bp.uart_bridge()
